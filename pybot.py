@@ -1,4 +1,5 @@
 import socket
+from protocol import IRC
 
 class Pybot:
   def __init__(self, host, port=6667, nick="pybot"):
@@ -21,10 +22,26 @@ class Pybot:
     self.conn.send(content)
 
   def fetch(self, bytes=4096):
+
+    lines = self.fetch_raw(bytes)
+
+    class Message:
+      pass
+
+    messages = []
+    for l in lines:
+      m = Message()
+      m.user = IRC.getUser(l)
+      m.content = IRC.getContent(l)
+      m.channel = IRC.getChannel(l)
+      messages.append(m)
+    return messages
+
+  def fetch_raw(self, bytes=4096):
     self.readbuffer = self.readbuffer + self.conn.recv(bytes)
-    temp = self.readbuffer.split("\n")
-    self.readbuffer = temp.pop()
+    lines = self.readbuffer.split("\n")
+    self.readbuffer = lines.pop()
 
-    print self.readbuffer, temp
+    print self.readbuffer, lines
 
-    return temp
+    return lines
