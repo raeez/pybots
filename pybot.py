@@ -13,14 +13,29 @@ class Pybot:
 
     self.joined = {}
 
-  def join(self, channel):
+  def _join(self, channel):
     self.conn.send("JOIN %s \r\n" % channel)
     self.joined[channel] = 1
 
-  def say(self, channel, msg):
+  def join(self, channel):
+    if isinstance(channel, str):
+      self._join(channel)
+    if isinstance(channel, list):
+      for c in channel:
+        self._join(c)
+
+  def _post(self, channel, msg):
     content = "PRIVMSG " + channel + " :" + str(msg).rstrip() + "\r\n"
     self.conn.send(content)
 
+  def say(self, channel, msg):
+    if isinstance(channel, str):
+      self._post(channel, msg)
+
+    if isinstance(channel, list):
+      for c in channel:
+        self._post(c, msg)
+      
   def fetch(self, bytes=4096):
 
     lines = self.fetch_raw(bytes)
