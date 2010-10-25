@@ -3,7 +3,7 @@ from protocol import IRC
 
 class Pybot:
   def __init__(self, host, port=6667, nick="pybot"):
-    print "Creating Pybot: %s@%s"
+    print "Creating Pybot: %s@%s" % (nick, host)
     self.conn = socket.socket()
     self.conn.connect((host, port))
     self.conn.send("NICK %s\r\n" % nick)
