@@ -36,9 +36,16 @@ class Pybot:
       for c in channel:
         self._post(c, msg)
       
-  def fetch(self, bytes=4096):
+  def _fetch(self, bytes=4096):
+    self.readbuffer = self.readbuffer + self.conn.recv(bytes)
+    lines = self.readbuffer.split("\n")
+    self.readbuffer = lines.pop()
 
-    lines = self.fetch_raw(bytes)
+    print self.readbuffer, lines
+    return lines
+
+  def fetch(self, bytes=4096):
+    lines = self._fetch(bytes)
 
     class Message:
       pass
@@ -52,11 +59,3 @@ class Pybot:
       messages.append(m)
     return messages
 
-  def fetch_raw(self, bytes=4096):
-    self.readbuffer = self.readbuffer + self.conn.recv(bytes)
-    lines = self.readbuffer.split("\n")
-    self.readbuffer = lines.pop()
-
-    print self.readbuffer, lines
-
-    return lines
