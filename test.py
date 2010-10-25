@@ -5,11 +5,11 @@ p = Pybot("comm.devpayments.com")
 p.join("#pcilevelonecompliant")
 
 while True:
-  temp = p.fetch()
+  messages = p.fetch()
 
-  for line in temp:
-    content = IRC.getContent("#pcilevelonecompliant", line)
-    user = IRC.getUser(line)
+  for msg in messages:
+    content = IRC.getContent("#pcilevelonecompliant", msg)
+    user = IRC.getUser(msg)
 
     if content != "":
       #someone said something in our channel, echo it back
