@@ -58,6 +58,7 @@ class Pybot:
     for l in lines:
       if IRC.isPing(l):
         self.pong(IRC.pingServer(l))
+        continue
       m = Message()
       m.user = IRC.getUser(l)
       m.content = IRC.getContent(l)
