@@ -65,4 +65,3 @@ class Pybot:
       m.channel = IRC.getChannel(l)
       messages.append(m)
     return messages
-
