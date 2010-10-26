@@ -1,4 +1,13 @@
 class IRC:
+  @classmethod
+  def isPing(cls, item):
+    if item.find("PING") == -1:
+      return False
+    return True
+
+  @classmethod
+  def pingServer(cls, item):
+    return item.split(":")[1].rstrip()
 
   @classmethod
   def getContent(cls, item):

@@ -13,6 +13,10 @@ class Pybot:
 
     self.joined = {}
 
+  def pong(self, server):
+    print "sending a pong! %s" % server
+    self.conn.send("PONG %s \r\n" % server)
+
   def _join(self, channel):
     self.conn.send("JOIN %s \r\n" % channel)
     self.joined[channel] = 1
@@ -52,6 +56,8 @@ class Pybot:
 
     messages = []
     for l in lines:
+      if IRC.isPing(l):
+        self.pong(IRC.pingServer(l))
       m = Message()
       m.user = IRC.getUser(l)
       m.content = IRC.getContent(l)
