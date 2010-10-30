@@ -3,14 +3,19 @@ from pybot import Pybot
 HOST = "comm.devpayments.com"
 CHANNELS = ["#pcilevelonecompliant", "#pcileveltwocompliant", "#general"]
 
-p = Pybot(HOST, nick='todobot')
-p.join(CHANNELS)
+p = Pybot("comm.devpayments.com", nick="todobot")
+p.join("#general")
+
+#create a new pybot : Pybot(hostname, port=394024, nick='somenick'
+#tell pybot to join a channel: p.join("#channelname")
+#fetch available messages : p.fetch() ----> [msg, msg, msg, msg]
+#say something in a particular channel : p.say("#channelgoeshere", "thing to say goes here")
 
 FILENAME = 'todobot.data'
 
 class TodoList:
   def __init__(self):
-    self.file = open('todobot.data', 'r')
+    self.file = open(FILENAME, 'r')
     items = self.file.readlines()
     if len(items) > 0:
       self.items = [f.rstrip() for f in items]
@@ -38,6 +43,11 @@ todo = TodoList()
 
 while True:
   for msg in p.fetch():
+    #msg is an object that represents a single user's message sent to the server
+    #msg.channel
+    #msg.content
+    #msg.user
+
     if msg.channel in CHANNELS:
       if msg.content.find("todobot:") != -1:
 
@@ -47,9 +57,11 @@ while True:
             p.say(msg.channel, "%d: %s" % (i,thing))
 
         elif msg.content.find("add") != -1:
-          thing = msg.content.split("add ")[1]
-          todo.add(thing)
-          p.say(msg.channel,"Added item %s" % thing)
+          index_of_add_cmd = msg.content.find("add ")
+          thing_to_add = msg.content[index_of_add_cmd + len("add "):]
+          todo.add(thing_to_add)
+
+          p.say(msg.channel,"Added item %s" % thing_to_add)
 
         elif msg.content.find("done") != -1:
           number = -1
