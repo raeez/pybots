@@ -3,7 +3,7 @@ from os import mkdir
 import logging
 import logging.handlers
 
-HOST = "comm.devpayments.com"
+HOST = "comm.secretsite.com"
 CHANNELS = ["#pcilevelonecompliant", "#pcileveltwocompliant"]
 
 p = Pybot(HOST, nick='logbot')

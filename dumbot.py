@@ -1,6 +1,6 @@
 from pybot import Pybot
 
-p = Pybot("comm.devpayments.com", nick="dumbot")
+p = Pybot("comm.secretsite.com", nick="dumbot")
 p.join("#secretchannel")
 
 while True:

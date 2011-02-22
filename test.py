@@ -1,6 +1,6 @@
 from pybot import Pybot
 
-HOST = "comm.devpayments.com"
+HOST = "comm.secretsite.com"
 CHANNELS = ["#pcilevelonecompliant", "#pcileveltwocompliant"]
 
 p = Pybot(HOST)

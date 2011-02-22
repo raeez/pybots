@@ -1,9 +1,9 @@
 from pybot import Pybot
 
-HOST = "comm.devpayments.com"
+HOST = "comm.secretsite.com"
 CHANNELS = ["#pcilevelonecompliant", "#pcileveltwocompliant", "#general"]
 
-p = Pybot("comm.devpayments.com", nick="todobot")
+p = Pybot(HOST, nick="todobot")
 p.join("#general")
 
 #create a new pybot : Pybot(hostname, port=394024, nick='somenick'
