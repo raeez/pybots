@@ -1,10 +1,13 @@
 from pybot import Pybot
 from os import mkdir
+from os import popen
 import logging
 import logging.handlers
+import re
 
-HOST = "comm.secretsite.com"
-CHANNELS = ["#pcilevelonecompliant", "#pcileveltwocompliant"]
+HOST = "localhost"
+CHANNELS = ["#somechannel"]
+BOTNICK = "logbot"
 
 p = Pybot(HOST, nick='logbot')
 p.join(CHANNELS)
@@ -58,7 +61,7 @@ class Logger(dict):
     #self.handlers.append(self.email_handlers) #TODO get the mail server up and running
 
     self.create_logger('system')
-    self['system'].debug('Created an instance of Logger!')
+    self['system'].info('Created an instance of Logger!')
 
   def create_logger(self, logname):
     new_logger = logging.getLogger(logname)
@@ -84,26 +87,33 @@ p.say(CHANNELS, "logbot reporting for duty!")
 while True:
   for msg in p.fetch():
     if msg.channel in CHANNELS:
-      if msg.content.find("logbot:") != -1:
+      if re.search('%s:' % BOTNICK, msg.content, flags=re.IGNORECASE):
 
-        if msg.content.find("mode") != -1:
+        if re.search('mode', msg.content, flags=re.IGNORECASE):
           if LOG is True:
             p.say(msg.channel, "watching your every move...")
           else:
             p.say(msg.channel, "turning a blind eye...")
           continue
 
-        if msg.content.find("private") != -1:
-          LOG = False
-          p.say(msg.channel, "logbot logging off. Do your illegal things!")
-          continue
-
-        elif msg.content.find("public") != -1:
+        elif re.search('public', msg.content, flags=re.IGNORECASE):
           LOG = True
           p.say(msg.channel, "logbot logging on")
           continue
 
+        if re.search('private', msg.content, flags=re.IGNORECASE):
+          LOG = False
+          p.say(msg.channel, "logbot logging off. Do your illegal things!")
+          continue
+
+        res = re.search('query=\d+', msg.content, flags=re.IGNORECASE)
+        if res:
+          query = int(res.group(0).split('=')[1])
+          logdata = popen('tail -' + str(query) +' log/logbot.log').read()
+          p.say(msg.user, logdata)
+          continue
+
       if LOG:
-        log['system'].debug("[%s] %s:\t%s" % (msg.channel, msg.user, msg.content))
+        log['system'].info("[%s] %s:\t%s" % (msg.channel, msg.user, msg.content))
       
       #someone said something in our channel, log it!

@@ -3,8 +3,8 @@ import smtplib
 from email.mime.text import MIMEText
 from twitter import Twitter, OAuth
 
-HOST = "comm.secretsite.com"
-CHANNELS = ["#pcilevelonecompliant", "#pcileveltwocompliant"]
+HOST = "localhost"
+CHANNELS = ["#somechannel"]
 
 p = Pybot(HOST, nick='twitbot')
 p.join(CHANNELS)

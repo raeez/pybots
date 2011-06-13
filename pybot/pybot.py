@@ -29,7 +29,7 @@ class Pybot:
         self._join(c)
 
   def _post(self, channel, msg):
-    content = "PRIVMSG " + channel + " :" + str(msg).rstrip() + "\r\n"
+    content = ''.join(["PRIVMSG " + channel + " :" + m.rstrip('\r\n') + '\r\n' for m in str(msg).split('\n')])
     self.conn.send(content)
 
   def say(self, channel, msg):
