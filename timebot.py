@@ -24,14 +24,11 @@ pst = timezone('US/Pacific')
 jhb = timezone('Africa/Johannesburg')
 zones = [pst, est, utc, jhb]
 fmt = '%H:%M:%S %Z%z'
-def talk(m):
-  p.say(msg.channel, m)
 
 while True:
   for msg in p.fetch():
     if msg.channel in CHANNELS:
       if re.search("%s:" % BOTNICK, msg.content):
         czones = [utc.localize(datetime.now()).astimezone(z).strftime(fmt) for z in zones]
-
-        map(talk, czones)
+        [p.say(msg.channel, m) for m in czones]
         continue
